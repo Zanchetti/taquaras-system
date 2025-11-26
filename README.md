@@ -115,8 +115,8 @@ Sistema web completo que centraliza toda a gestão em uma plataforma digital mod
 
 **1. Clone o repositório:**
 ```bash
-git clone https://github.com/seu-usuario/adc-taquaras-sistema.git
-cd adc-taquaras-sistema
+git clone https://github.com/Zanchetti/taquaras-system
+cd taquaras-system
 ```
 
 **2. Configure o Backend:**

@@ -4,7 +4,6 @@ import { verificarToken, verificarAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Listar campos
 router.get('/', verificarToken, (req, res) => {
   try {
     const campos = db.prepare('SELECT * FROM campos WHERE ativo = 1').all();
@@ -14,7 +13,6 @@ router.get('/', verificarToken, (req, res) => {
   }
 });
 
-// Criar campo (apenas admin)
 router.post('/', verificarToken, verificarAdmin, (req, res) => {
   try {
     const { nome, localizacao, tipo, valor_hora } = req.body;
@@ -33,7 +31,6 @@ router.post('/', verificarToken, verificarAdmin, (req, res) => {
   }
 });
 
-// Atualizar campo
 router.put('/:id', verificarToken, verificarAdmin, (req, res) => {
   try {
     const { id } = req.params;
@@ -51,7 +48,6 @@ router.put('/:id', verificarToken, verificarAdmin, (req, res) => {
   }
 });
 
-// Deletar campo
 router.delete('/:id', verificarToken, verificarAdmin, (req, res) => {
   try {
     const { id } = req.params;

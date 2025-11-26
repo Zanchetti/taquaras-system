@@ -5,11 +5,10 @@
 import bcrypt from 'bcryptjs';
 import db from './config/database.js';
 
-console.log('🌱 Iniciando seed do banco de dados...\n');
+console.log('Iniciando seed do banco de dados...\n');
 
-// Limpa dados existentes
 const limparDados = () => {
-  console.log('🗑️  Limpando dados existentes...');
+  console.log('Limpando dados existentes...');
   try {
     db.exec('DELETE FROM equipe_jogadores');
     db.exec('DELETE FROM equipes');
@@ -18,15 +17,14 @@ const limparDados = () => {
     db.exec('DELETE FROM agendamentos');
     db.exec('DELETE FROM campos');
     db.exec('DELETE FROM usuarios');
-    console.log('✅ Dados limpos\n');
+    console.log('Dados limpos\n');
   } catch (erro) {
-    console.log('⚠️  Tabelas ainda não existem ou já estão vazias\n');
+    console.log('⚠Tabelas ainda não existem ou já estão vazias\n');
   }
 };
 
-// Cria usuários de teste
 const criarUsuarios = async () => {
-  console.log('👥 Criando usuários...');
+  console.log('Criando usuários...');
   
   const usuarios = [
     {
@@ -124,12 +122,12 @@ const criarUsuarios = async () => {
     stmt.run(user.nome, user.email, user.senha, user.telefone, user.tipo);
   });
 
-  console.log(`✅ ${usuarios.length} usuários criados\n`);
+  console.log(`${usuarios.length} usuários criados\n`);
 };
 
 // Cria campos
 const criarCampos = () => {
-  console.log('⚽ Criando campos...');
+  console.log('Criando campos...');
   
   const campos = [
     {
@@ -161,12 +159,11 @@ const criarCampos = () => {
     stmt.run(campo.nome, campo.localizacao, campo.tipo, campo.valor_hora);
   });
 
-  console.log(`✅ ${campos.length} campos criados\n`);
+  console.log(`${campos.length} campos criados\n`);
 };
 
-// Cria agendamentos
 const criarAgendamentos = () => {
-  console.log('📅 Criando agendamentos...');
+  console.log('Criando agendamentos...');
   
   const hoje = new Date();
   
@@ -220,10 +217,9 @@ const criarAgendamentos = () => {
     stmt.run(ag.campo_id, ag.data, ag.hora_inicio, ag.hora_fim, ag.usuario_id, ag.observacoes);
   });
 
-  console.log(`✅ ${agendamentos.length} agendamentos criados\n`);
+  console.log(`${agendamentos.length} agendamentos criados\n`);
 };
 
-// Cria dias de jogo
 const criarDiasJogo = () => {
   console.log('🏆 Criando dias de jogo...');
   
@@ -267,10 +263,9 @@ const criarDiasJogo = () => {
     stmt.run(dia.data, dia.agendamento_id, dia.status);
   });
 
-  console.log(`✅ ${dias.length} dias de jogo criados\n`);
+  console.log(`${dias.length} dias de jogo criados\n`);
 };
 
-// Cria inscrições de exemplo
 const criarInscricoes = () => {
   console.log('📝 Criando inscrições...');
   
@@ -329,14 +324,12 @@ const criarInscricoes = () => {
     try {
       stmt.run(insc.dia_jogo_id, insc.usuario_id);
     } catch (erro) {
-      // Ignora duplicatas
     }
   });
 
-  console.log(`✅ ${inscricoes.length} inscrições criadas\n`);
+  console.log(`${inscricoes.length} inscrições criadas\n`);
 };
 
-// Executa seed
 const executarSeed = async () => {
   try {
     limparDados();
@@ -347,34 +340,33 @@ const executarSeed = async () => {
     criarInscricoes();
 
     console.log('========================================');
-    console.log('✅ Seed concluído com sucesso!');
+    console.log('Seed concluído com sucesso!');
     console.log('========================================\n');
-    console.log('📋 Credenciais de acesso:\n');
-    console.log('👑 ADMIN:');
+    console.log('Credenciais de acesso:\n');
+    console.log('ADMIN:');
     console.log('   Email: admin@adctaquaras.com');
     console.log('   Senha: admin123\n');
-    console.log('⚽ JOGADOR (exemplo):');
+    console.log('JOGADOR (exemplo):');
     console.log('   Email: joao@email.com');
     console.log('   Senha: 123456\n');
-    console.log('📊 Dados criados:');
+    console.log('Dados criados:');
     console.log('   • 12 usuários (1 admin + 11 jogadores)');
     console.log('   • 3 campos');
     console.log('   • 4 agendamentos');
     console.log('   • 4 dias de jogo');
     console.log('   • 36 inscrições\n');
-    console.log('🚀 Agora inicie o servidor backend:');
+    console.log('Agora inicie o servidor backend:');
     console.log('   npm run dev\n');
-    console.log('💻 E em outro terminal, inicie o frontend:');
+    console.log('E em outro terminal, inicie o frontend:');
     console.log('   cd ../frontend && npm run dev\n');
-    console.log('✨ Depois acesse: http://localhost:3000\n');
+    console.log('Depois acesse: http://localhost:3000\n');
 
     process.exit(0);
 
   } catch (erro) {
-    console.error('❌ Erro ao executar seed:', erro);
+    console.error('Erro ao executar seed:', erro);
     process.exit(1);
   }
 };
 
-// Executa
 executarSeed();

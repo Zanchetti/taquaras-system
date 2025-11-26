@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
-// Pages
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import Dashboard from './pages/Dashboard';
@@ -11,7 +10,6 @@ import Equipes from './pages/Equipes';
 import Agendamentos from './pages/Agendamentos';
 import Admin from './pages/Admin';
 
-// Componente de rota protegida
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { usuario } = useAuth();
 

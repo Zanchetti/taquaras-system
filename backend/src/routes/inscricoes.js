@@ -4,7 +4,6 @@ import { verificarToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Criar dia de jogo
 router.post('/dias-jogo', verificarToken, (req, res) => {
   try {
     const { data, agendamento_id } = req.body;
@@ -23,7 +22,6 @@ router.post('/dias-jogo', verificarToken, (req, res) => {
   }
 });
 
-// Listar dias de jogo
 router.get('/dias-jogo', verificarToken, (req, res) => {
   try {
     const dias = db.prepare(`
@@ -41,13 +39,11 @@ router.get('/dias-jogo', verificarToken, (req, res) => {
   }
 });
 
-// Inscrever-se em um dia
 router.post('/inscrever', verificarToken, (req, res) => {
   try {
     const { dia_jogo_id } = req.body;
     const usuario_id = req.usuario.id;
 
-    // Verifica se o dia existe e está aberto
     const dia = db.prepare('SELECT * FROM dias_jogo WHERE id = ?').get(dia_jogo_id);
     if (!dia) {
       return res.status(404).json({ erro: 'Dia de jogo não encontrado' });
@@ -56,7 +52,6 @@ router.post('/inscrever', verificarToken, (req, res) => {
       return res.status(400).json({ erro: 'Inscrições fechadas para este dia' });
     }
 
-    // Insere inscrição
     db.prepare(`
       INSERT INTO inscricoes (dia_jogo_id, usuario_id)
       VALUES (?, ?)
@@ -71,7 +66,6 @@ router.post('/inscrever', verificarToken, (req, res) => {
   }
 });
 
-// Cancelar inscrição
 router.delete('/inscrever/:dia_jogo_id', verificarToken, (req, res) => {
   try {
     const { dia_jogo_id } = req.params;
@@ -88,7 +82,6 @@ router.delete('/inscrever/:dia_jogo_id', verificarToken, (req, res) => {
   }
 });
 
-// Listar inscritos de um dia
 router.get('/inscritos/:dia_jogo_id', verificarToken, (req, res) => {
   try {
     const { dia_jogo_id } = req.params;

@@ -4,7 +4,6 @@ import { verificarToken, verificarAdmin } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Listar todos os usuários (apenas admin)
 router.get('/', verificarToken, verificarAdmin, (req, res) => {
   try {
     const usuarios = db.prepare(`
@@ -18,7 +17,6 @@ router.get('/', verificarToken, verificarAdmin, (req, res) => {
   }
 });
 
-// Buscar perfil do usuário logado
 router.get('/perfil', verificarToken, (req, res) => {
   try {
     const usuario = db.prepare(`
@@ -37,13 +35,11 @@ router.get('/perfil', verificarToken, (req, res) => {
   }
 });
 
-// Atualizar usuário
 router.put('/:id', verificarToken, (req, res) => {
   try {
     const { id } = req.params;
     const { nome, telefone } = req.body;
 
-    // Verifica se é o próprio usuário ou admin
     if (req.usuario.id !== parseInt(id) && req.usuario.tipo !== 'admin') {
       return res.status(403).json({ erro: 'Sem permissão para atualizar este usuário' });
     }

@@ -5,26 +5,21 @@ import db from '../config/database.js';
 
 const router = express.Router();
 
-// Registro de novo usuário
 router.post('/registro', async (req, res) => {
   try {
     const { nome, email, senha, telefone, tipo } = req.body;
 
-    // Valida campos obrigatórios
     if (!nome || !email || !senha) {
       return res.status(400).json({ erro: 'Nome, email e senha são obrigatórios' });
     }
 
-    // Verifica se email já existe
     const usuarioExistente = db.prepare('SELECT id FROM usuarios WHERE email = ?').get(email);
     if (usuarioExistente) {
       return res.status(400).json({ erro: 'Email já cadastrado' });
     }
 
-    // Hash da senha
     const senhaHash = await bcrypt.hash(senha, 10);
 
-    // Insere usuário
     const resultado = db.prepare(`
       INSERT INTO usuarios (nome, email, senha, telefone, tipo)
       VALUES (?, ?, ?, ?, ?)
@@ -39,25 +34,21 @@ router.post('/registro', async (req, res) => {
   }
 });
 
-// Login
 router.post('/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
 
-    // Busca usuário
     const usuario = db.prepare('SELECT * FROM usuarios WHERE email = ? AND ativo = 1').get(email);
 
     if (!usuario) {
       return res.status(401).json({ erro: 'Email ou senha incorretos' });
     }
 
-    // Verifica senha
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
     if (!senhaValida) {
       return res.status(401).json({ erro: 'Email ou senha incorretos' });
     }
 
-    // Gera token JWT
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email, tipo: usuario.tipo },
       process.env.JWT_SECRET,

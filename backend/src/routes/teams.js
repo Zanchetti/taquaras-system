@@ -4,13 +4,11 @@ import { verificarToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Gerar equipes aleatoriamente
 router.post('/gerar/:dia_jogo_id', verificarToken, (req, res) => {
   try {
     const { dia_jogo_id } = req.params;
     const { quantidade_times } = req.body;
 
-    // Busca inscritos
     const inscritos = db.prepare(`
       SELECT u.id, u.nome
       FROM inscricoes i
@@ -22,10 +20,8 @@ router.post('/gerar/:dia_jogo_id', verificarToken, (req, res) => {
       return res.status(400).json({ erro: 'Nenhum inscrito encontrado' });
     }
 
-    // Remove equipes antigas deste dia
     db.prepare('DELETE FROM equipes WHERE dia_jogo_id = ?').run(dia_jogo_id);
 
-    // Embaralha jogadores
     const jogadoresEmbaralhados = inscritos.sort(() => Math.random() - 0.5);
 
     const cores = ['Azul', 'Vermelho', 'Verde', 'Amarelo', 'Laranja', 'Roxo'];
@@ -35,7 +31,6 @@ router.post('/gerar/:dia_jogo_id', verificarToken, (req, res) => {
     const equipes = [];
 
     for (let i = 0; i < numTimes; i++) {
-      // Cria equipe
       const resultado = db.prepare(`
         INSERT INTO equipes (dia_jogo_id, nome, cor)
         VALUES (?, ?, ?)
@@ -46,7 +41,6 @@ router.post('/gerar/:dia_jogo_id', verificarToken, (req, res) => {
       const fim = Math.min(inicio + jogadoresPorTime, jogadoresEmbaralhados.length);
       const jogadoresTime = jogadoresEmbaralhados.slice(inicio, fim);
 
-      // Adiciona jogadores à equipe
       const insertJogador = db.prepare(`
         INSERT INTO equipe_jogadores (equipe_id, usuario_id)
         VALUES (?, ?)
@@ -73,7 +67,6 @@ router.post('/gerar/:dia_jogo_id', verificarToken, (req, res) => {
   }
 });
 
-// Listar equipes de um dia
 router.get('/:dia_jogo_id', verificarToken, (req, res) => {
   try {
     const { dia_jogo_id } = req.params;
@@ -89,7 +82,6 @@ router.get('/:dia_jogo_id', verificarToken, (req, res) => {
       GROUP BY e.id
     `).all(dia_jogo_id);
 
-    // Busca detalhes dos jogadores para cada equipe
     equipes.forEach(equipe => {
       const jogadores = db.prepare(`
         SELECT u.id, u.nome

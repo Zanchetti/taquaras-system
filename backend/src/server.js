@@ -29,11 +29,11 @@ app.use('/api/agendamentos', agendamentosRoutes);
 
 // Rota de teste
 app.get('/api', (req, res) => {
-  res.json({ mensagem: '🏆 API ADC Taquaras rodando!' });
+  res.json({ mensagem: 'API ADC Taquaras rodando!' });
 });
 
 // Inicia servidor
 app.listen(PORT, () => {
-  console.log(`\n🚀 Servidor rodando em http://localhost:${PORT}`);
-  console.log(`📚 API disponível em http://localhost:${PORT}/api\n`);
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`API disponível em http://localhost:${PORT}/api\n`);
 });

@@ -4,13 +4,11 @@ import { verificarToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Criar agendamento
 router.post('/', verificarToken, (req, res) => {
   try {
     const { campo_id, data, hora_inicio, hora_fim, observacoes } = req.body;
     const usuario_id = req.usuario.id;
 
-    // Verifica conflitos de horário
     const conflito = db.prepare(`
       SELECT * FROM agendamentos
       WHERE campo_id = ? AND data = ? AND status = 'confirmado'
@@ -39,7 +37,6 @@ router.post('/', verificarToken, (req, res) => {
   }
 });
 
-// Listar agendamentos
 router.get('/', verificarToken, (req, res) => {
   try {
     const { data } = req.query;
@@ -65,7 +62,6 @@ router.get('/', verificarToken, (req, res) => {
   }
 });
 
-// Cancelar agendamento
 router.delete('/:id', verificarToken, (req, res) => {
   try {
     const { id } = req.params;
@@ -76,7 +72,6 @@ router.delete('/:id', verificarToken, (req, res) => {
       return res.status(404).json({ erro: 'Agendamento não encontrado' });
     }
 
-    // Verifica se é o usuário que criou ou admin
     if (agendamento.usuario_id !== req.usuario.id && req.usuario.tipo !== 'admin') {
       return res.status(403).json({ erro: 'Sem permissão para cancelar este agendamento' });
     }

@@ -38,6 +38,11 @@ const Layout = ({ children }) => {
               >
                 <Menu size={24} />
               </button>
+              <img
+                src="/logo-adc-taquaras.png"
+                alt="Logo"
+                className="h-10 w-10 object-contain"
+              />
               <h1 className="text-2xl font-bold">ADC Taquaras</h1>
             </div>
 

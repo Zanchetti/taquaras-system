@@ -40,6 +40,11 @@ const Registro = () => {
     <div className="min-h-screen bg-gradient-to-br from-adc-green to-adc-light flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
+          <img
+            src="/logo-adc-taquaras.png"
+            alt="Logo ADC Taquaras"
+            className="w-32 h-32 mx-auto mb-4 object-contain"
+          />
           <h1 className="text-3xl font-bold text-adc-green mb-2">
             Criar Conta
           </h1>
